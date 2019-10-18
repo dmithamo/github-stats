@@ -5,9 +5,22 @@ interface UserProps {
 }
 
 const User: React.FC<UserProps> = ({ user }) => {
+  const { avatar_url: avatar, login, html_url: profile, score } = user;
   return (
     <Fragment>
-      <h2>{user}</h2>
+      <img
+        style={{ width: '100px', height: 'auto' }}
+        src={avatar}
+        alt={login}
+      />
+      <a href={profile} target='_blank' rel='noreferrer noopener'>
+        <h2>{login}</h2>
+      </a>
+      <p>
+        GitScore:
+        <span>{Math.floor(score)}</span>
+        <sup>*I have no idea what this number means</sup>
+      </p>
     </Fragment>
   );
 };

@@ -13,6 +13,7 @@ interface State {
   repos: Array<any>;
   loading: Boolean;
   error: { status: string; statusText: string };
+  searched: Boolean;
 }
 
 const { REACT_APP_GH_CLIENT_ID, REACT_APP_GH_CLIENT_SECRET } = process.env;
@@ -24,6 +25,7 @@ class App extends Component {
     repos: [],
     loading: false,
     error: { status: '', statusText: '' },
+    searched: false,
   };
 
   /**
@@ -84,14 +86,14 @@ class App extends Component {
         `https:api.github.com/users/${ghUsername}/repos?per_page=100&client_id=${REACT_APP_GH_CLIENT_ID}&client_secret=${REACT_APP_GH_CLIENT_SECRET}`,
       );
 
-      this.setState({ user: users[0], repos, loading: false });
+      this.setState({ user: users[0], repos, loading: false, searched: true });
     } catch (err) {
       this.handleError(err);
     }
   };
 
   render() {
-    const { ghUsername, user, repos, loading, error } = this.state;
+    const { ghUsername, user, repos, loading, error, searched } = this.state;
 
     return (
       <Fragment>
@@ -111,10 +113,12 @@ class App extends Component {
               {error.status ? (
                 <Error error={error} />
               ) : (
-                <Fragment>
-                  <User user={user.login} />
-                  <Repos repos={repos} />
-                </Fragment>
+                searched && (
+                  <Fragment>
+                    <User user={user} />
+                    <Repos repos={repos} />
+                  </Fragment>
+                )
               )}
             </div>
           </Fragment>
