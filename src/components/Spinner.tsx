@@ -1,8 +1,11 @@
 import React from 'react';
 
-interface Props {
+interface SpinnerProps {
   content?: string;
 }
-export const Spinner: React.FC<Props> = ({ content }) => (
+
+const Spinner: React.FC<SpinnerProps> = ({ content }) => (
   <h2>{`Loading ${content || ''} ...`}</h2>
 );
+
+export default Spinner;

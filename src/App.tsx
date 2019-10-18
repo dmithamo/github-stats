@@ -1,42 +1,30 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
+import Intro from './components/Intro';
 import Repos from './components/Repos';
 import User from './components/User';
 import SearchBar from './components/SearchBar';
-import { Spinner } from './components/Spinner';
+import Spinner from './components/Spinner';
+import Error from './components/Error';
 
 interface State {
   ghUsername: string;
   user: any;
   repos: Array<any>;
   loading: Boolean;
+  error: { status: string; statusText: string };
 }
 
 const { REACT_APP_GH_CLIENT_ID, REACT_APP_GH_CLIENT_SECRET } = process.env;
 
 class App extends Component {
   state: State = {
-    ghUsername: 'dmithamo',
+    ghUsername: '',
     user: {},
     repos: [],
-    loading: true,
+    loading: false,
+    error: { status: '', statusText: '' },
   };
-
-  async componentDidMount() {
-    const { ghUsername } = this.state;
-
-    const {
-      data: { items: users },
-    } = await axios.get(
-      `https:api.github.com/search/users?q=${ghUsername}&client_id=${REACT_APP_GH_CLIENT_ID}&client_secret=${REACT_APP_GH_CLIENT_SECRET}`,
-    );
-
-    const { data: repos } = await axios.get(
-      `https:api.github.com/users/${ghUsername}/repos?per_page=100&client_id=${REACT_APP_GH_CLIENT_ID}&client_secret=${REACT_APP_GH_CLIENT_SECRET}`,
-    );
-
-    this.setState({ user: users[0], repos, loading: false });
-  }
 
   /**
    *@description Respond to change it search parameter
@@ -46,7 +34,31 @@ class App extends Component {
    */
   handleSearchBarChange = (e: any) => {
     const { value: query } = e.target;
-    this.setState({ ghUsername: query });
+    this.setState({ ghUsername: query, error: { status: '', statusText: '' } });
+  };
+
+  /**
+   * @description React to ENter keypress
+   * that is, if user presses Enter, search away
+   *
+   * @returns void
+   *
+   */
+  handleEnter = (e: any) => {
+    e.which === 13 && this.searchUser();
+  };
+
+  /**
+   * @description Add errors to state if any happen
+   *
+   * @returns void
+   *
+   */
+  handleError = (error: any) => {
+    const {
+      response: { status, statusText },
+    } = error;
+    this.setState({ error: { status, statusText }, loading: false });
   };
 
   /**
@@ -61,36 +73,51 @@ class App extends Component {
     this.setState({ loading: true });
     const { ghUsername } = this.state;
 
-    const {
-      data: { items: users },
-    } = await axios.get(
-      `https:api.github.com/search/users?q=${ghUsername}&client_id=${REACT_APP_GH_CLIENT_ID}&client_secret=${REACT_APP_GH_CLIENT_SECRET}`,
-    );
+    try {
+      const {
+        data: { items: users },
+      } = await axios.get(
+        `https:api.github.com/search/users?q=${ghUsername}&client_id=${REACT_APP_GH_CLIENT_ID}&client_secret=${REACT_APP_GH_CLIENT_SECRET}`,
+      );
 
-    const { data: repos } = await axios.get(
-      `https:api.github.com/users/${ghUsername}/repos?per_page=100&client_id=${REACT_APP_GH_CLIENT_ID}&client_secret=${REACT_APP_GH_CLIENT_SECRET}`,
-    );
+      const { data: repos } = await axios.get(
+        `https:api.github.com/users/${ghUsername}/repos?per_page=100&client_id=${REACT_APP_GH_CLIENT_ID}&client_secret=${REACT_APP_GH_CLIENT_SECRET}`,
+      );
 
-    this.setState({ user: users[0], repos, loading: false });
+      this.setState({ user: users[0], repos, loading: false });
+    } catch (err) {
+      this.handleError(err);
+    }
   };
 
   render() {
-    const { ghUsername, user, repos, loading } = this.state;
+    const { ghUsername, user, repos, loading, error } = this.state;
 
     return (
       <Fragment>
         {loading ? (
           <Spinner content='repos' />
         ) : (
-          <div>
-            <SearchBar
-              onChange={(e) => this.handleSearchBarChange(e)}
-              onClick={this.searchUser}
-              query={ghUsername}
-            />
-            <User user={user.login} />
-            <Repos repos={repos} />
-          </div>
+          <Fragment>
+            <div>
+              <Intro />
+              <SearchBar
+                onKeyUp={(e) => this.handleEnter(e)}
+                onChange={(e) => this.handleSearchBarChange(e)}
+                onClick={this.searchUser}
+                query={ghUsername}
+              />
+
+              {error.status ? (
+                <Error error={error} />
+              ) : (
+                <Fragment>
+                  <User user={user.login} />
+                  <Repos repos={repos} />
+                </Fragment>
+              )}
+            </div>
+          </Fragment>
         )}
       </Fragment>
     );
