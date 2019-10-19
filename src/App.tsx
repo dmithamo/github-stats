@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import Intro from './components/Intro';
-import Repos from './components/Repos';
 import User from './components/User';
 import SearchBar from './components/SearchBar';
 import Spinner from './components/Spinner';
@@ -9,11 +8,9 @@ import Error from './components/Error';
 
 interface State {
   ghUsername: string;
-  user: any;
-  repos: Array<any>;
+  users: Array<any>;
   loading: Boolean;
-  error: { status: string; statusText: string };
-  searched: Boolean;
+  error: any;
 }
 
 const { REACT_APP_GH_CLIENT_ID, REACT_APP_GH_CLIENT_SECRET } = process.env;
@@ -21,11 +18,9 @@ const { REACT_APP_GH_CLIENT_ID, REACT_APP_GH_CLIENT_SECRET } = process.env;
 class App extends Component {
   state: State = {
     ghUsername: '',
-    user: {},
-    repos: [],
+    users: [],
     loading: false,
-    error: { status: '', statusText: '' },
-    searched: false,
+    error: null,
   };
 
   /**
@@ -36,7 +31,7 @@ class App extends Component {
    */
   handleSearchBarChange = (e: any) => {
     const { value: query } = e.target;
-    this.setState({ ghUsername: query, error: { status: '', statusText: '' } });
+    this.setState({ ghUsername: query, users: [], error: null });
   };
 
   /**
@@ -82,45 +77,44 @@ class App extends Component {
         `https:api.github.com/search/users?q=${ghUsername}&client_id=${REACT_APP_GH_CLIENT_ID}&client_secret=${REACT_APP_GH_CLIENT_SECRET}`,
       );
 
-      const { data: repos } = await axios.get(
-        `https:api.github.com/users/${ghUsername}/repos?per_page=100&client_id=${REACT_APP_GH_CLIENT_ID}&client_secret=${REACT_APP_GH_CLIENT_SECRET}`,
-      );
-
-      this.setState({ user: users[0], repos, loading: false, searched: true });
+      users.length > 0
+        ? this.setState({ users, loading: false })
+        : this.setState({
+          error: { status: '404', statusText: 'No users found' },
+          loading: false,
+        });
     } catch (err) {
       this.handleError(err);
     }
   };
 
   render() {
-    const { ghUsername, user, repos, loading, error, searched } = this.state;
+    const { ghUsername, users, loading, error } = this.state;
 
     return (
       <Fragment>
+        {error && <Error error={error} />}
+        <Intro />
         {loading ? (
           <Spinner content='repos' />
         ) : (
           <Fragment>
-            <div>
-              <Intro />
-              <SearchBar
-                onKeyUp={(e) => this.handleEnter(e)}
-                onChange={(e) => this.handleSearchBarChange(e)}
-                onClick={this.searchUser}
-                query={ghUsername}
-              />
+            <SearchBar
+              onKeyUp={(e) => this.handleEnter(e)}
+              onChange={(e) => this.handleSearchBarChange(e)}
+              onClick={this.searchUser}
+              query={ghUsername}
+            />
 
-              {error.status ? (
-                <Error error={error} />
-              ) : (
-                searched && (
-                  <Fragment>
+            <Fragment>
+              <ul>
+                {users.map((user) => (
+                  <li key={user.login}>
                     <User user={user} />
-                    <Repos repos={repos} />
-                  </Fragment>
-                )
-              )}
-            </div>
+                  </li>
+                ))}
+              </ul>
+            </Fragment>
           </Fragment>
         )}
       </Fragment>

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 interface ErrorProps {
   error: {
@@ -10,10 +10,17 @@ interface ErrorProps {
 const Error: React.FC<ErrorProps> = ({
   error: { status: errorStatus, statusText: errorText },
 }) => (
-  <Fragment>
+  <div
+    style={{
+      backgroundColor: '#FA8072',
+      padding: '1.5em',
+      border: '2px solid #8B0000',
+      borderRadius: '20px',
+    }}
+  >
     <h2>{errorStatus}</h2>
     <p>{errorText}</p>
-  </Fragment>
+  </div>
 );
 
 export default Error;
