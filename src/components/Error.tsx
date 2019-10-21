@@ -2,7 +2,7 @@ import React from 'react';
 
 interface ErrorProps {
   error: {
-    status: string;
+    status: number;
     statusText: string;
   };
 }
