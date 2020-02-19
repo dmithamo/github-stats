@@ -1,16 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import Homepage from './components/Homepage';
-import NavBar from './components/Nav';
-// import User from './components/User';
+import Routes from './components/Routes';
 
 const App: React.FC = () => {
-  return (
-    <Router>
-      <NavBar />
-      <Homepage />
-    </Router>
-  );
+  return <Routes />;
 };
 
 export default App;
