@@ -1,23 +1,23 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 interface SearchResultsContainerProps {
-  searchResults: Array<any>;
+  searchResults: Array<{ [key: string]: any }>;
 }
 
 const SearchResultsContainer: React.FC<SearchResultsContainerProps> = ({
   searchResults,
 }) => {
   return (
-    <Fragment>
+    <>
       <h5>{`${searchResults.length} found`}</h5>
 
       <ul>
-        {searchResults.map((result) => (
+        {searchResults.map(result => (
           <SearchResult key={result.login} result={result} />
         ))}
       </ul>
-    </Fragment>
+    </>
   );
 };
 
@@ -29,15 +29,14 @@ const SearchResult: React.FC<SearchResultProps> = ({ result }) => {
   const { login: username, avatar_url: avatar } = result;
   return (
     <li>
-      <img
-        style={{ width: '50px', height: 'auto' }}
-        src={avatar}
-        alt={username}
-      />
-      <br />
-      <br />
-      <br />
-      <Link to={`user-detail/${username}`}>{`More about ${username}`}</Link>
+      <Link to={`user-detail/${username}`}>
+        <img
+          style={{ width: '50px', height: 'auto' }}
+          src={avatar}
+          alt={username}
+        />
+        <span>{`More about ${username}`}</span>
+      </Link>
     </li>
   );
 };
