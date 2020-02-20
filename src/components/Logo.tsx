@@ -5,7 +5,7 @@ interface LogoProps {
   size?: string;
 }
 
-const Logo: React.FC<LogoProps> = ({ size = 'normal' }) => {
+const Logo: React.FC<LogoProps> = ({ size = 'normal' }: LogoProps) => {
   const isSmall = size === 'small';
   return (
     <LogoContainer isSmall={isSmall}>

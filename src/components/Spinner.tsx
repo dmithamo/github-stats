@@ -4,7 +4,7 @@ interface SpinnerProps {
   content?: string;
 }
 
-const Spinner: React.FC<SpinnerProps> = ({ content }) => (
+const Spinner: React.FC<SpinnerProps> = ({ content }: SpinnerProps) => (
   <h2>{`Loading ${content || ''} ...`}</h2>
 );
 

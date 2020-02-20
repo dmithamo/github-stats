@@ -4,7 +4,7 @@
     "es6": true,
     "node": true
   },
-  "extends": "airbnb",
+  "extends": ["plugin:react/recommended", "google"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -12,49 +12,14 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
-      "jsx": true,
-      "impliedStrict": true,
-      "experimentalObjectRestSpread": true,
-      "arrowFunctions": true,
-      "destructuring": true
+      "jsx": true
     },
-    "ecmaVersion": 2018,
+    "ecmaVersion": 11,
     "sourceType": "module"
   },
-  "plugins": ["react"],
+  "plugins": ["react", "@typescript-eslint"],
   "rules": {
-    "semi": ["error", "always"],
-    "quotes": ["error", "single"],
-    "import/no-unresolved": [0],
-    "react/prop-types": [0],
-    "no-restricted-globals": [0],
-    "no-confusing-arrow": [0],
-    "implicit-arrow-linebreak": [0],
-    "function-paren-newline": [0],
-    "arrow-parens": [0],
-    "arrow-body-style": [0],
-    "object-curly-newline": [0],
-    "no-use-before-define": [0],
-    "no-case-declarations": [0],
-    "consistent-return": [0],
-    "no-unused-expressions": [0],
-    "operator-linebreak": [0],
-    "global-require": [0],
-    "no-underscore-dangle": [0],
-    "react/jsx-wrap-multilines": [0],
-    "react/jsx-filename-extension": [0],
-    "class-methods-use-this": [0],
-    "array-callback-return": [0],
-    "no-prototype-builtins": [0],
-    "react/jsx-boolean-value": [0],
-    "no-nested-ternary": [0],
-    "react/jsx-fragments": [0],
-    "import/prefer-default-export": [0],
-    "jsx-quotes": [0],
-    "react/static-property-placement": [0],
-    "react/state-in-constructor": [0],
-    "linebreak-style": [0],
-    "react/jsx-props-no-spreading": [0],
-    "import/extensions": [0]
+    "object-curly-spacing": "off",
+    "indent": "off"
   }
 }

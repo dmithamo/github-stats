@@ -1,22 +1,35 @@
 import React from 'react';
+import { useSearchContext } from '../../context/search';
 
-interface SearchProps {
-  query: string;
-  onKeyUp: (e: any) => void;
-  onChange: (e: any) => void;
-  onClick: (e: any) => void;
-}
+const SearchBar: React.FC = () => {
+  const {
+    onClickSearchButton,
+    onEnterKeyPress,
+    onChange,
+    searchState: { query, isLoading },
+  } = useSearchContext();
 
-const SearchBar: React.FC<SearchProps> = ({
-  query,
-  onKeyUp,
-  onChange,
-  onClick,
-}) => {
+  /**
+   * @description trigger a search request if key presses is Enter key
+   * [keyCode === 13]
+   * @param {React.KeyboardEvent} e
+   */
+  const handleKeyPress: (e: React.KeyboardEvent) => void = (
+    e: React.KeyboardEvent,
+  ) => {
+    if (e.which === 13 || e.keyCode === 13) {
+      onEnterKeyPress();
+    }
+  };
+
   return (
     <div>
-      <input onKeyUp={onKeyUp} onChange={onChange} value={query} />
-      <button onClick={onClick} type='submit'>
+      <input
+        onKeyUp={(e) => handleKeyPress(e)}
+        onChange={(e) => onChange(e.target.value)}
+        value={query}
+      />
+      <button disabled={isLoading} onClick={onClickSearchButton} type="submit">
         Search
       </button>
     </div>

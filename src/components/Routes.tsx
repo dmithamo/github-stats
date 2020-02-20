@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import LandingPage from './LandingPage';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AboutPage from './About';
-import FourOhFourPage from './NotFound';
+import LandingPage from './LandingPage';
 import { FrontLayout } from './Layout';
+import FourOhFourPage from './NotFound';
 import UserDetail from './User/UserDetail';
 
 const Routes: React.FC = () => {
@@ -51,7 +51,7 @@ const RouteItem: React.FC<RouteItemProps> = ({
   exact,
   component: Component,
   layout: Layout,
-}) => {
+}: RouteItemProps) => {
   return (
     <Route
       exact={exact}

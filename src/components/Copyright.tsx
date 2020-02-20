@@ -1,11 +1,11 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Copyright: React.FC = () => (
   <FooterContainer>
     <FontAwesomeIcon icon={['far', 'copyright']} />
-    <span>&nbsp;2019 Bundi Mithamo</span>
+    <span>&nbsp;2020 Dennis Mithamo</span>
   </FooterContainer>
 );
 

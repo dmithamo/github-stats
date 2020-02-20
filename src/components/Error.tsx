@@ -9,7 +9,7 @@ interface ErrorProps {
 
 const Error: React.FC<ErrorProps> = ({
   error: { status: errorStatus, statusText: errorText },
-}) => (
+}: ErrorProps) => (
   <div
     style={{
       backgroundColor: '#FA8072',

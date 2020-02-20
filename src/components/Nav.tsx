@@ -13,9 +13,10 @@ const NavBar = () => {
 
 interface NavItemProps {
   to: string;
+  children?: JSX.Element | string;
 }
 
-const NavItem: React.FC<NavItemProps> = ({ to, children }) => {
+const NavItem: React.FC<NavItemProps> = ({ to, children }: NavItemProps) => {
   return (
     <StyledLink exact activeClassName="active" to={to}>
       {children}

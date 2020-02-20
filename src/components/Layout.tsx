@@ -1,9 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import NavBar from './Nav';
 import Footer from './Footer';
+import NavBar from './Nav';
 
-export const FrontLayout: React.FC = ({ children }) => (
+interface LayoutProps {
+  children?: JSX.Element;
+}
+export const FrontLayout: React.FC<LayoutProps> = ({
+  children,
+}: LayoutProps) => (
   <CenterMainContentContainer>
     <div id="nav-bar">
       <NavBar />
@@ -35,6 +40,6 @@ const CenterMainContentContainer = styled.section`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
   }
 `;

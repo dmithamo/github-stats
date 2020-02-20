@@ -1,6 +1,6 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Copyright from './Copyright';
 
 const Footer: React.FC = () => {
@@ -39,7 +39,10 @@ interface ContactIconProps {
   href: string;
   children: any;
 }
-const ContactIcon: React.FC<ContactIconProps> = ({ href, children }) => {
+const ContactIcon: React.FC<ContactIconProps> = ({
+  href,
+  children,
+}: ContactIconProps) => {
   return (
     <ContactIconContainer target="blank" href={href}>
       {children}
@@ -53,7 +56,7 @@ const ContactIconContainer = styled.a`
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  width: 200px;
+  width: fit-content;
   margin: 2px;
 
   background-color: #1d3e5398;
@@ -66,14 +69,14 @@ const ContactIconContainer = styled.a`
 
 const FooterContainer = styled.footer`
   width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  background-color: #00000010;
+  background-color: black;
   padding: 5em 0;
-  box-shadow: 0 -1px 3px 2px #00000030;
   font-weight: bold;
-  opacity: 0.7;
+  color: white;
 
   p {
     margin: 0;
@@ -86,7 +89,7 @@ const Container = styled.aside`
   align-items: center;
   padding: 0.5em;
 
-  @media (max-width: 825px) {
+  @media (max-width: 1000px) {
     flex-direction: column;
   }
 `;
