@@ -7,13 +7,17 @@ interface SearchResultsContainerProps {
 
 const SearchResultsContainer: React.FC<SearchResultsContainerProps> = ({
   searchResults,
-}) => {
+}: SearchResultsContainerProps) => {
+  const SEARCH_RESULTS_LIMIT =
+    searchResults.length > 10 ? 10 : searchResults.length;
   return (
     <>
-      <h5>{`${searchResults.length} found`}</h5>
+      <h5>
+        {`Showing ${SEARCH_RESULTS_LIMIT} of ${searchResults.length} found`}
+      </h5>
 
       <ul>
-        {searchResults.map(result => (
+        {searchResults.slice(0, SEARCH_RESULTS_LIMIT).map((result) => (
           <SearchResult key={result.login} result={result} />
         ))}
       </ul>
@@ -25,7 +29,9 @@ interface SearchResultProps {
   result: any;
 }
 
-const SearchResult: React.FC<SearchResultProps> = ({ result }) => {
+const SearchResult: React.FC<SearchResultProps> = ({
+  result,
+}: SearchResultProps) => {
   const { login: username, avatar_url: avatar } = result;
   return (
     <li>

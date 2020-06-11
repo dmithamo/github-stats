@@ -1,15 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import Homepage from './components/Homepage';
-import NavBar from './components/Nav';
-// import User from './components/User';
+import Routes from './components/Routes';
+import SearchContextProvider from './context/search';
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <NavBar />
-      <Homepage />
-    </Router>
+    <SearchContextProvider>
+      <Routes />
+    </SearchContextProvider>
   );
 };
 
